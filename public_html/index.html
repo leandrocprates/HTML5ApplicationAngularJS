@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html ng-app="Modulo1">
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"  ></script>
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script> 
+        
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" />
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>        
+
+        
+        
+       
+
+        <!-- date picker -->
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        
+        
+          <script>
+          $(function() {
+            $( "#datepicker" ).datepicker({
+                    dateFormat: 'dd/mm/yy',
+                    dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'],
+                    dayNamesMin: ['D','S','T','Q','Q','S','S','D'],
+                    dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
+                    monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+                    monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
+                    nextText: 'Próximo',
+                    prevText: 'Anterior'                
+                });
+          });
+          </script>
+
+        
+    </head>
+    <body>
+        <div ng-controller="Controller1">
+            <label>Nome:</label>
+            <input type="text"  placeholder="Digite seu Nome" ng-model="nome" >
+            Ola {{nome}} ! 
+            
+            <br/>
+            
+            <select  ng-options="motivo.nome for motivo in listaMotivos "
+                    ng-model="nomeEscolhido" ng-change="adicionarObjeto()" >
+            </select>
+
+            <br/>
+            
+            <pre>
+                {{nomeEscolhido | json}}
+            </pre>
+            
+            
+            Data html  5 : <br>
+            <input type="date" name="bday" ><br>
+            
+            <p></p>
+            
+            
+            <input type="date"  ng-model="dataAtual" />        
+
+          
+            <p>Date: <input type="text" id="datepicker"  ng-model="parent.checkOut"    ></p>
+            
+            <input type="button"  value="Click me" ng-click="enviar()"  >
+            
+            
+            
+        </div>
+        
+        <script>
+
+            angular.module("Modulo1",[])
+                    .controller("Controller1", function($scope) {
+              
+
+                function Motivo(){
+                    id = null,
+                    idPai = null;
+                    nome = null;
+                    subMotivo= [];
+                }
+        
+                $scope.criaObjeto = function(){
+                    
+                    $scope.motivo1 = new Motivo();
+                    $scope.motivo1.nome="SHOW";
+                    $scope.motivo1.id=1;
+                    $scope.motivo1.idPai = null;
+                    
+                    $scope.subMotivo1 = new Motivo(); 
+                    $scope.subMotivo1.nome="ROCK";
+                    $scope.subMotivo1.id=2;
+                    $scope.subMotivo1.idPai=1 ; 
+
+                    $scope.subMotivo2 = new Motivo(); 
+                    $scope.subMotivo2.nome="POP";
+                    $scope.subMotivo2.id=3;
+                    $scope.subMotivo2.idPai=1 ; 
+        
+                    $scope.motivo1.subMotivo = new Array();
+                    $scope.motivo1.subMotivo.push($scope.subMotivo1,$scope.subMotivo2);
+                    
+                    
+                    /* Novo Motivo   */
+                    
+                    $scope.motivo2 = new Motivo();
+                    $scope.motivo2.nome="FECHAMENTO";
+                    $scope.motivo2.id=6;
+                    $scope.motivo2.idPai = null;
+                    
+                    $scope.subMotivo3 = new Motivo(); 
+                    $scope.subMotivo3.nome="TRANFERIDO";
+                    $scope.subMotivo3.id=7;
+                    $scope.subMotivo3.idPai=6 ; 
+
+                    $scope.subMotivo4 = new Motivo(); 
+                    $scope.subMotivo4.nome="RESOLVIDO";
+                    $scope.subMotivo4.id=8;
+                    $scope.subMotivo4.idPai=6 ; 
+                    
+                    
+                    $scope.motivo2.subMotivo = new Array();
+                    $scope.motivo2.subMotivo.push($scope.subMotivo3,$scope.subMotivo4);
+                    
+                    
+                    
+                    $scope.listaMotivos = new Array();
+                    $scope.listaMotivos.push($scope.motivo1,$scope.motivo2);
+                    
+                    
+                    console.log($scope.listaMotivos);
+                    
+                };
+                
+                
+                $scope.adicionarObjeto = function(){
+                    
+                    $scope.subMotivo5 = new Motivo(); 
+                    $scope.subMotivo5.nome="ADICIONADO";
+                    $scope.subMotivo5.id=null;
+                    $scope.subMotivo5.idPai=1 ; 
+                    
+                    $scope.nomeEscolhido.subMotivo.push($scope.subMotivo5);
+                    
+                };
+                
+                
+                $scope.criaObjeto();
+        
+                $scope.parent = {checkOut:''};
+                $scope.dataAtual = '10/05/2017' ; // new Date('2017', '05', '10');       
+        
+                $scope.enviar= function (){
+                    console.log('atual '+ $scope.dataAtual);
+                    console.log('parent '+ $scope.parent.checkOut);
+                }
+        
+        
+        
+            });
+
+        </script>
+        
+
+    </body>
+</html>
+
+
