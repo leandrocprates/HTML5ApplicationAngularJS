@@ -10,9 +10,12 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
+        <link rel="shortcut icon" href="#"/>
+        
+        
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"  ></script>
         
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>-->
         <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script> 
         
         <!-- Latest compiled and minified CSS -->
@@ -76,12 +79,12 @@ and open the template in the editor.
             <p></p>
             
             
-            <input type="date"  ng-model="dataAtual" />        
+            <input type="date"  ng-model="dataAtual" />
 
           
-            <p>Date: <input type="text" id="datepicker"  ng-model="parent.checkOut"    ></p>
+            <p>Date: <input type="text" id="datepicker"  ng-model="parent.checkOut"></p>
             
-            <input type="button"  value="Click me" ng-click="enviar()"  >
+            <input type="button"  value="Enviar" ng-click="enviar()"  >
             
             
             
@@ -94,7 +97,7 @@ and open the template in the editor.
               
 
                 function Motivo(){
-                    id = null,
+                    id = null;
                     idPai = null;
                     nome = null;
                     subMotivo= [];
@@ -172,7 +175,7 @@ and open the template in the editor.
         
                 $scope.enviar= function (){
                     console.log('atual '+ $scope.dataAtual);
-                    console.log('parent '+ $scope.parent.checkOut);
+                    console.log($scope.parent);
                 }
         
         

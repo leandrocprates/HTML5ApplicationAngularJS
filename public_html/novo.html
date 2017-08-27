@@ -2,6 +2,8 @@
    <head>
       <title>Angular JS Includes</title>
       
+      <link rel="shortcut icon" href="#"/>
+      
       <style>
          table, th , td {
             border: 1px solid grey;
@@ -17,11 +19,11 @@
             background-color: #ffffff;
          }
       </style>
-      
+
    </head>
    <body>
       <h2>AngularJS Sample Application</h2>
-      <div ng-app = "" ng-controller = "studentController">
+      <div ng-app = "app" ng-controller = "studentController">
       
          <table>
             <tr>
@@ -38,37 +40,114 @@
          </table>
           
           
+          Captura scroll com jquery 
           <textarea rows="10" cols="50" id="my_div"
                 style="resize: none;" data-role="none"></textarea>
           
-          
-          
+
+          Usando diretivas para capturar scroll no topo e bottom        
+          <textarea rows="10" cols="50" id="scroll_com_angular" 
+                    exec-on-scroll-to-top="handleScrollToTop"
+                    exec-on-scroll-to-bottom="handleScrollToBottom"
+                style="resize: none;" data-role="none"></textarea>
+                
+
       </div>
       
+      
+      <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
+      <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+      
+      
       <script>
-         function studentController($scope,$http) {
-            var url = "data.txt";
-         
-            $http.get(url).success( function(response) {
-               $scope.students = response;
-            });
+          
+            var app = angular.module("app", []) ; 
+            app.controller("studentController" ,    
+                    function studentController($scope,$http) {
+                       var url = "data.txt";
+
+                       $http.get(url).success( function(response) {
+                          $scope.students = response;
+                       });
+
+
+                       //Pega o scroll da tela quando chega no topo 
+                       $('#my_div').scroll(function() {
+                           var pos = $('#my_div').scrollTop();
+                           if (pos == 0) {
+                               alert('Topo da div');
+                           }
+                       });            
+                    
+    
+                        $scope.handleScrollToTop = function (){
+                            alert('scroll no topo do elemento '); 
+                        }
+
+                        $scope.handleScrollToBottom = function (){
+                            alert('scroll no final do elemento '); 
+                        }
+        
+        
+                    }
+                            
+                    
+                            
+                            
+                            
+            ); 
             
             
-            
-            $('#my_div').scroll(function() {
-                var pos = $('#my_div').scrollTop();
-                if (pos == 0) {
-                    alert('top of the div');
+            /*
+             * Pega acao de scroll no topo do elemento
+             */
+            app.directive('execOnScrollToTop', function () {
+              return {
+                restrict: 'A',
+                link: function (scope, element, attrs) {
+                  var fn = scope.$eval(attrs.execOnScrollToTop);
+
+                  element.on('scroll', function (e) {
+
+                    if (!e.target.scrollTop) {
+                      console.log("scrolled to top...");
+                      scope.$apply(fn);
+                    }
+
+                  });
                 }
+
+              };
+            });   
+   
+    
+            /*
+             * Pega acao de scroll no fim do elemento
+             */
+            app.directive('execOnScrollToBottom', function () {
+              return {
+                restrict: 'A',
+                link: function (scope, element, attrs) {
+                  var fn = scope.$eval(attrs.execOnScrollToBottom),
+                      clientHeight = element[0].clientHeight;
+
+                  element.on('scroll', function (e) {
+                    var el = e.target;
+
+                    if ((el.scrollHeight - el.scrollTop) === clientHeight) { // fully scrolled
+                      console.log("scrolled to bottom...");
+                      scope.$apply(fn);
+                    }
+                  });
+                }
+              };
             });            
             
             
             
-         }
+
       </script>
       
-      <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
-      <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
        
        
    </body>
