@@ -63,7 +63,12 @@
           
             var app = angular.module("app", []) ; 
             app.controller("studentController" ,    
-                    function studentController($scope,$http) {
+                    function studentController($scope,$http, $timeout) {
+                        
+                        
+                       var offset = 0 ;  
+                       var executando = false ; 
+                        
                        var url = "data.txt";
 
                        $http.get(url).success( function(response) {
@@ -81,11 +86,30 @@
                     
     
                         $scope.handleScrollToTop = function (){
-                            alert('scroll no topo do elemento '); 
+                            console.log('scroll no topo do elemento '); 
+                            
+                            if ( executando == false){
+                                executando = true ; 
+                                
+                                $http({
+                                  method: 'GET',
+                                  url: 'http://localhost:8080/RESTAndroid/teste/'+ offset
+                                }).then(function successCallback(response) {
+                                    offset  = offset + 1 ; 
+                                    console.log('offset : '+ offset) ; 
+                                    executando = false ; 
+                                    
+                                }, function errorCallback(response) {
+                                    console.log('erro '+ response) ; 
+                                });                           
+                                
+                            }
+                            
+                           
                         }
 
                         $scope.handleScrollToBottom = function (){
-                            alert('scroll no final do elemento '); 
+                            //alert('scroll no final do elemento '); 
                         }
         
         
